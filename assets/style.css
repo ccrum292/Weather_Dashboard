@@ -1,0 +1,29 @@
+body {
+    background: #EBEBEB;
+}
+
+header {
+    text-align: center;
+    width: 100%;
+    background: #58A69E;
+    padding-bottom: 1px;
+}
+
+#today-div {
+    border: black;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.heading-div h2 {
+    float: left;
+  
+}
+
+.heading-div img{
+    float: left;
+}
+
+.heading-div {
+    width: 100%;
+}
