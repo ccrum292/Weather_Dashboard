@@ -27,3 +27,8 @@ header {
 .heading-div {
     width: 100%;
 }
+
+li {
+    list-style-type: none;
+    line-height: 2;
+}
