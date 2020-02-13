@@ -9,6 +9,11 @@ header {
     padding-bottom: 1px;
 }
 
+#main-display{
+    margin-top: 15px;
+}
+
+
 #today-div {
     border: black;
     border-style: solid;
@@ -26,9 +31,35 @@ header {
 
 .heading-div {
     width: 100%;
+    padding-left: 40px;
 }
 
 li {
     list-style-type: none;
     line-height: 2;
+}
+
+.no-padding {
+    padding-left: 0;
+}
+
+.blue-div{
+    background-color: cornflowerblue;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+#forcast-heading{
+    width: 100%;
+    margin-top: 10px;
+    padding-left: 15px;
+}
+
+#search-history-div {
+    margin-top: 15px;
+}
+
+.city-history-input-button {
+    width: 100%;
+    
 }
