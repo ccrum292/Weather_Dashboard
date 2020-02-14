@@ -1,13 +1,22 @@
 var d = new Date();
 var currentDate = '(' + (d.getMonth()+1)+ "/"+ d.getDate()+ "/" + d.getFullYear() + ')';
 
+function renderButtons() {
+    //get my array - or an empty one - from localS
+    //loop through the array
+    // create a button for each item
+}
+
 $("#city-input-button").on('click', function(event){
     event.preventDefault();
     var inputVal = $("#city-input").val().trim();
     if (inputVal === ""){return}
     else{ displayingTodaysWeather(inputVal);
          // console.log(inputVal)
-        $("#search-history-div").append($("<button type='submit' id='" +inputVal+ "' class='city-history-input-button'>"+inputVal+"</button>"))
+         //remove next 3 lines, not needed anymore
+        $("#search-history-div").prepend($("<button type='submit' id='" +inputVal+ "' class='city-history-input-button'>"+inputVal+"</button>"))
+        $(".clear").remove();
+        $("#search-history-div").append($("<button type='submit' class='clear'>Clear Search History</button>"))
     }
 })
 
@@ -18,7 +27,13 @@ function displayBasedOnHistoryButton (){
     event.preventDefault();
     displayingTodaysWeather($(this).attr("id"))
     
-    
+}
+
+$(document).on('click', '.clear', clearButtonHistory);
+
+function clearButtonHistory(){
+    $("#search-history-div").empty();
+    $("#main-display").empty();
 }
 
 function displayingTodaysWeather(input){
@@ -33,7 +48,11 @@ function displayingTodaysWeather(input){
         url: queryWeatherURL,
         method: "GET"
     }).then(function(response){
-    
+        //get array - or make new one - from localS
+        //add response.name into array
+        //save array back into local storage
+
+        // call renderButtons
         var heading2 = $("<h2>"+ response.name +" "+ currentDate +"</h2>") 
         var iconEl = $("<img src='http://openweathermap.org/img/w/" + response.weather[0].icon + ".png' alt='Icon depicting current weather.'>");
         $(".heading-div").append(heading2, iconEl)
@@ -42,7 +61,7 @@ function displayingTodaysWeather(input){
 
         var lat = response.coord.lat;
         var lon = response.coord.lon;
-        var weatherSpecifics = $("<ul id='today-list'><li>Temperature: " + response.main.temp +  " °F</li><li>Humidity: " + response.main.humidity + "</li><li>Wind Speed: " + response.wind.speed+ " mph</li></ul>")
+        var weatherSpecifics = $("<ul id='today-list'><li>Temperature: " + response.main.temp +  " °F</li><li>Humidity: " + response.main.humidity + "%</li><li>Wind Speed: " + response.wind.speed+ " mph</li></ul>")
         $("#today-div").append(weatherSpecifics)
 
         var queryUvi = "http://api.openweathermap.org/data/2.5/uvi?appid=0c0fdca9577d3029019a275437cd2ba8&lat="+ lat + "&lon=" + lon;
@@ -80,8 +99,6 @@ function displayingTodaysWeather(input){
         $('#five-day-div').append(newForcastDiv);
         }
      });
-
-
 }
 
 

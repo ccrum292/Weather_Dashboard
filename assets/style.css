@@ -59,7 +59,12 @@ li {
     margin-top: 15px;
 }
 
-.city-history-input-button {
-    width: 100%;
-    
+.city-history-input-button, 
+.clear
+{
+    width: 100%;   
+    text-align: left;
+    padding-left: 15px;
 }
+
+
