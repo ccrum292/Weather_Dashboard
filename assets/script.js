@@ -1,11 +1,38 @@
 var d = new Date();
 var currentDate = '(' + (d.getMonth()+1)+ "/"+ d.getDate()+ "/" + d.getFullYear() + ')';
 
-function renderButtons() {
-    //get my array - or an empty one - from localS
-    //loop through the array
-    // create a button for each item
+function loadUpLocalStorage(){
+    let cityLocalStorage = JSON.parse(localStorage.getItem("cityLocalStorage"))
+    // console.log(cityLocalStorage.length)
+    if (!cityLocalStorage){
+        return
+    }else{
+        displayingTodaysWeather(cityLocalStorage[cityLocalStorage.length-1]);
+    }
 }
+
+loadUpLocalStorage();
+
+
+
+function renderButtons() {
+    $("#search-history-div").empty();
+    //get my array - or an empty one - from localS
+    var cityLocalStorage = JSON.parse(localStorage.getItem("cityLocalStorage"))
+    //loop through the array
+    for (var i=0; i<cityLocalStorage.length;i++){
+        var buttonEl = $("<button type='submit' class='city-history-input-button'>"+cityLocalStorage[i]+"</button>")
+        console.log(cityLocalStorage[i]);
+        $('#search-history-div').prepend(buttonEl);
+    }
+    // create a button for each item
+        
+        $("#search-history-div").append($("<button type='submit' class='clear'>Clear Search History</button>"))
+
+    
+}
+
+$(document).on('click', '.city-history-input-button', displayBasedOnHistoryButton);
 
 $("#city-input-button").on('click', function(event){
     event.preventDefault();
@@ -14,19 +41,16 @@ $("#city-input-button").on('click', function(event){
     else{ displayingTodaysWeather(inputVal);
          // console.log(inputVal)
          //remove next 3 lines, not needed anymore
-        $("#search-history-div").prepend($("<button type='submit' id='" +inputVal+ "' class='city-history-input-button'>"+inputVal+"</button>"))
-        $(".clear").remove();
-        $("#search-history-div").append($("<button type='submit' class='clear'>Clear Search History</button>"))
+        // $("#search-history-div").prepend($("<button type='submit' id='" +inputVal+ "' class='city-history-input-button'>"+inputVal+"</button>"))
     }
 })
 
-$(document).on('click', '.city-history-input-button', displayBasedOnHistoryButton);
 
 
 function displayBasedOnHistoryButton (){
     event.preventDefault();
-    displayingTodaysWeather($(this).attr("id"))
-    
+    displayingTodaysWeather($(this).text())
+    console.log($(this).text())
 }
 
 $(document).on('click', '.clear', clearButtonHistory);
@@ -34,6 +58,7 @@ $(document).on('click', '.clear', clearButtonHistory);
 function clearButtonHistory(){
     $("#search-history-div").empty();
     $("#main-display").empty();
+    localStorage.clear();
 }
 
 function displayingTodaysWeather(input){
@@ -49,10 +74,17 @@ function displayingTodaysWeather(input){
         method: "GET"
     }).then(function(response){
         //get array - or make new one - from localS
+        var cityLocalStorage = JSON.parse(localStorage.getItem("cityLocalStorage"))
+        if (!cityLocalStorage){cityLocalStorage = []};
         //add response.name into array
+        if(cityLocalStorage.indexOf(response.name) === -1){
+            cityLocalStorage.push(response.name)
+        } 
+        // console.log(response.name)
         //save array back into local storage
-
+        localStorage.setItem("cityLocalStorage", JSON.stringify(cityLocalStorage))
         // call renderButtons
+        renderButtons();
         var heading2 = $("<h2>"+ response.name +" "+ currentDate +"</h2>") 
         var iconEl = $("<img src='http://openweathermap.org/img/w/" + response.weather[0].icon + ".png' alt='Icon depicting current weather.'>");
         $(".heading-div").append(heading2, iconEl)
